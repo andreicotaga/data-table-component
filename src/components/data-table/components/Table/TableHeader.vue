@@ -6,20 +6,12 @@
                        :rows="data" />
             </th>
             <th v-for="(column, idx) in columns"
-                :key="column.title || column.field || idx">
-<!--                <component
-                        v-if="column.thComp"
-                        :is="forDynCompIs(column.thComp)"
-                        :column="column"
-                        :field="column.field"
-                        :title="column.title"
-                        v-bind="$props">
-                </component>
-                <template v-else>-->
-                    {{ column.title }}
-                <!--</template>-->
+                :key="column.title || column.field || idx"
+            >
+                {{ column.title }}
                 <sortable v-if="column.sortable" :field="column.field" :query="query"/>
             </th>
+            <th key="--th-action">Actions</th>
         </transition-group>
     </thead>
 </template>
@@ -27,20 +19,12 @@
 <script>
     import Sortable from "./actions/sortable";
     import Bulk from "./actions/bulk";
+    import props from '../../utils/props'
 
     export default {
         name: "TableHeader",
         components: {Bulk, Sortable},
-        data() {
-            return {
-                selection: []
-            }
-        },
-        props: {
-            columns: { type: Array, required: true },
-            query: { type: Object, required: true },
-            data: { type: Array || Object, required: true }
-        }
+        mixins: [props]
     }
 </script>
 

@@ -6,10 +6,7 @@
 
 <script>
     export default {
-        name: "TableSkelet",
-        props: {
-            columns: { type: Array, required: true }
-        }
+        name: "TableSkelet"
     }
 </script>
 

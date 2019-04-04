@@ -13,8 +13,8 @@
         name: 'bulk',
         props: {
             selection: { type: Array, required: true },
-            row: Object,
-            rows: Array
+            row: Object, // available for tbody checkbox
+            rows: Array // available for thead checkbox
         },
         data: () => ({
             status: false
@@ -56,7 +56,7 @@
 
                 if (this.rows) {
                     // not only have same length but also non-zero
-                    this.status = this.rows.length === selection.length && selection.length;
+                    this.status = this.rows.length === selection.length && selection.length > 0;
                 }
             }
         }

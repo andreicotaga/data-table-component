@@ -1,8 +1,8 @@
 <template>
     <div>
-        <TableSkelet :columns="columns">
-            <TableHeader :columns="columns" :query="query" :data="data"/>
-            <TableBody :data="data" :columns="columns" />
+        <TableSkelet v-bind="propsToNormalTable">
+            <TableHeader v-bind="propsToNormalTable"/>
+            <TableBody v-bind="propsToNormalTable" />
             <TableFooter  />
         </TableSkelet>
     </div>
@@ -13,27 +13,18 @@
     import TableHeader from "./TableHeader.vue";
     import TableBody from "./TableBody.vue";
     import TableFooter from "./TableFooter.vue";
+    import props from '../../utils/props'
+    import isColVisible from '../../utils/isColVisible'
 
     export default {
         name: "TableAggregation",
-        props: {
-            columns: { type: Array, required: true },
-            data: { type: Array || Object, required: true },
-            itemsPerPage: { type: Array, default: () => [10, 20, 40, 80, 100] },
-            totalItems: { type: Number, required: true },
-            query: { type: Object, required: true }
-        },
-        data() {
-            return {
-                props: this.$props
-            }
-        },
-        mounted() {
-            this.propsToNormalTable();
-        },
-        methods: {
+        mixins: [props],
+        computed: {
+            visibleColumns () {
+                return this.columns.filter(isColVisible)
+            },
             propsToNormalTable () {
-                return this.props;
+                return { ...this.$props, columns: this.visibleColumns }
             },
         },
         components: {TableFooter, TableBody, TableHeader, TableSkelet}

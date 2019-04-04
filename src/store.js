@@ -82,6 +82,11 @@ export default new Vuex.Store({
 
                   commit('setPayments', snapshot.val());
               });
+        },
+        deletePayment() {
+            firebase
+                .database()
+                .ref()
         }
     },
     getters: {

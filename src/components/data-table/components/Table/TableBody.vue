@@ -11,6 +11,10 @@
                 <td v-for="col in columns" :key="col.title || col.field">
                     {{ item[col.field] }}
                 </td>
+                <td>
+                    <button type="button" class="btn-success">Edit</button>
+                    <button type="button" class="btn-danger" @click.prevent="deleteItem(item.Id)">Delete</button>
+                </td>
             </tr>
         </template>
     </template>
@@ -24,21 +28,26 @@
 
 <script>
     import Bulk from "./actions/bulk";
+    import props from '../../utils/props'
+
     export default {
         name: "TableBody",
         components: {Bulk},
-        data() {
-            return {
-                selection: []
-            }
-        },
-        props: {
-            columns: { type: Array, required: true },
-            data: { type: Array || Object, required: true }
-        },
+        mixins: [props],
         computed: {
             colLen () {
                 return this.columns.length + !!this.selection
+            }
+        },
+ /*       watch: {
+            selection (selection)
+            {
+                console.log(selection);
+            }
+        },*/
+        methods: {
+            deleteItem (id) {
+                console.log(id, 'id');
             }
         }
     }

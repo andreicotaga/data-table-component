@@ -1,10 +1,5 @@
 <template>
-  <DataTable :columns="columns"
-             :data="payments"
-             :items-per-page="itemsPerPage"
-             :total-items="total"
-             :query="query"
-  ></DataTable>
+  <DataTable v-bind="$data"></DataTable>
 </template>
 
 <script>
@@ -16,8 +11,8 @@
         name: 'Payments',
         data() {
             return {
-                payments: [],
-                itemsPerPage: [5, 15, 50, 100],
+                data: [],
+                pageSizeOptions: [10, 25, 50, 100],
                 columns: [
                   { title: 'ID',          field: 'Id', sortable: true, visible: true },
                   { title: 'Description', field: 'Description', sortable: true, visible: true },
@@ -26,7 +21,8 @@
                   { title: 'Amount',      field: 'Amount', sortable: true, visible: true }
                 ],
                 total: 0,
-                query: { limit: 10, offset: 0, sort: '', order: '' }
+                query: { limit: 10, offset: 0, sort: '', order: '' },
+                selection: []
             }
         },
         mounted() {
@@ -53,16 +49,16 @@
                 this.$store.dispatch('getPayments')
                     .then(function()
                     {
-                        self.payments = store.state.payments;
+                        self.data = store.state.payments;
+
+                        self.total = self.data.length;
 
                         if(self.query.sort)
                         {
-                            self.payments = orderBy(self.payments, self.query.sort, self.query.order)
+                            self.data = orderBy(self.data, self.query.sort, self.query.order)
                         }
 
-                        console.log(self.payments);
-
-                        self.total = self.payments.length;
+                        self.data = self.data.slice(self.query.offset, self.query.offset + self.query.limit);
                     });
             }
         },
